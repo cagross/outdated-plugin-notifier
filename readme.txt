@@ -4,7 +4,7 @@ Donate link: https://everlooksolutions.com/
 Tags: plugins
 Requires at least: 4.9.0
 Tested up to: 5.2.4
-Stable tag: 1.0.0
+Stable tag: trunk
 Requires PHP: 7.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -26,7 +26,7 @@ To use, simply install and activate the plugin.  There is no additional configur
 
 = Are there any settings to configure? =
 
-As of version 1.0.0, there are no settings to configure with this plugin.  As soon as you activate the plugin, it will display a new column on the plugin admin page. 
+There are currently no settings to configure with this plugin.  As soon as you activate the plugin, it will display a new column on the plugin admin page. 
  
 == Screenshots ==
 
@@ -39,5 +39,5 @@ As of version 1.0.0, there are no settings to configure with this plugin.  As so
 
 == Upgrade Notice ==
 
-= 1.0.0 =
-When future versions are released, this section will describe why user's should upgrade.
+= 1.0.1 =
+* Fixes a bug which would have prevented translations from being added to the plugin. Feel free to contribute to the project and translate the plugin into a language other than EN-US.

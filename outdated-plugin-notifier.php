@@ -9,11 +9,11 @@
  * Plugin Name:       Outdated Plugin Notifier
  * Plugin URI:        https://everlooksolutions.com
  * Description:       Plugin to display last modified date for all plugins.
- * Version:           1.0.0
+ * Version:           1.0.1
  * Author:            Carl Gross
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
- * Text Domain:       opn-td
+ * Text Domain:       outdated-plugin-notifier
  * Domain Path:       /languages
  * Requires at least: 4.9.0
  * Requires PHP:      7.0
@@ -51,7 +51,7 @@ function opn_error_wp( $plugin_meta, $plugin_file ) {
  */
 function opn_error_php( $plugin_meta, $plugin_file ) {
 	if ( plugin_basename( __FILE__ ) === $plugin_file ) {// In the plugin admin table, for the Outdated Plugin Notifier plugin, display an error message.
-		$plugin_meta[] = 'Your version of PHP does not meet the minimum requirements.  Please upgrade to PHP version 7.3 or later.';
+		$plugin_meta[] = 'Your version of PHP does not meet the minimum requirements.  Please upgrade to PHP version 7.0 or later.';
 	}
 	return $plugin_meta;
 }
@@ -65,7 +65,7 @@ function opn_error_php( $plugin_meta, $plugin_file ) {
  * @return array Returns an array containing the header text for each column in the plugin admin table (each array value is a string).
  */
 function opn_add_column( $columns ) {
-	$columns['last_updated'] = __( 'Last Dev Update', 'opn_td' );
+	$columns['last_updated'] = __( 'Last Dev Update', 'outdated-plugin-notifier' );
 	return $columns;
 }
 
@@ -78,7 +78,7 @@ function opn_add_column( $columns ) {
  * @return array Returns an array containing the header text for each column in the plugin admin table (each array value is a string).
  */
 function opn_add_sortable_column( $columns ) {
-	$columns['last_updated'] = __( 'Last Dev Update', 'opn_td' );
+	$columns['last_updated'] = __( 'Last Dev Update', 'outdated-plugin-notifier' );
 	return $columns;
 }
 
@@ -96,7 +96,7 @@ function opn_render_date( $column_name, $plugin_file, $plugin_data ) {
 
 		// Check if WordPress can find a slug for the plugin.  If not, return an error message.
 		if ( empty( $plugin_data['slug'] ) ) {
-			esc_html_e( 'Plugin name not found.', 'opn_td' );
+			esc_html_e( 'Plugin name not found.', 'outdated-plugin-notifier' );
 			return;
 		}
 
@@ -114,7 +114,7 @@ function opn_render_date( $column_name, $plugin_file, $plugin_data ) {
 			echo( esc_html( $date_lu_form ) );// Display the formatted date on the screen.
 
 		} else {
-			esc_html_e( 'Plugin information not found.', 'opn_td' );// If plugin information is not found in the WP plugin repo, display an error message.
+			esc_html_e( 'Plugin information not found.', 'outdated-plugin-notifier' );// If plugin information is not found in the WP plugin repo, display an error message.
 		}
 	}
 }
@@ -137,7 +137,7 @@ function opn_main() {
 	}
 
 	// Confirm user's version of PHP meets minimum requirement.
-	$opn_minphpver = '7.2';
+	$opn_minphpver = '7.0';
 	if ( version_compare( PHP_VERSION, $opn_minphpver, '<' ) ) {
 		add_filter( 'plugin_row_meta', 'opn_error_php', 10, 2 );
 		deactivate_plugins( plugin_basename( __FILE__ ) );// Self-deactivate the Outdated Plugin Notifier plugin.
@@ -148,7 +148,7 @@ function opn_main() {
 	if ( ! function_exists( 'plugins_api' ) ) {
 		$opn_include = include_once ABSPATH . 'wp-admin/includes/plugin-install.php';
 		if ( false === $opn_include ) {
-			esc_html_e( 'WordPress file wp-admin/includes/plugin-install.php not found.', 'opn_td' );
+			esc_html_e( 'WordPress file wp-admin/includes/plugin-install.php not found.', 'outdated-plugin-notifier' );
 			return;
 		}
 	}
