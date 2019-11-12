@@ -5,8 +5,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [1.0.1] - 2019-11-05
+### Added
+- Confirmed plugin is compatible with WordPress v5.3.  Modified readme.txt accordingly.
 ### Fixed
-- Issue which would have prevented translations from being properly added to plugin.  Translations can now be added as expected.
+- Incorrect text domain was specified, preventing translations from being properly added.  The correct text domain is now specified, so translations can now be added as expected.
 ### Fixed
 - Minor issue relating to the WP plugin repository.
 
