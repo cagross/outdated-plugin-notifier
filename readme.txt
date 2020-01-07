@@ -3,7 +3,7 @@ Contributors: carlgross
 Donate link: https://everlooksolutions.com/
 Tags: plugins
 Requires at least: 4.9.0
-Tested up to: 5.3
+Tested up to: 5.3.2
 Stable tag: trunk
 Requires PHP: 7.0
 License: GPLv2 or later
@@ -41,3 +41,7 @@ There are currently no settings to configure with this plugin.  As soon as you a
 
 = 1.0.1 =
 * Fixes a bug which would have prevented translations from being added to the plugin. Feel free to contribute to the project and translate the plugin into a language other than EN-US.
+
+= 1.0.2 =
+* Fixes a performance bug which was causing admin plugins page to load very slowly.  
+
