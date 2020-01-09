@@ -70,7 +70,7 @@ function opn_add_column( $columns ) {
 }
 
 /**
- * Ensures the new column in the plugin admin table is sortable.
+ * Ensures the new column in the plugin admin table is sortable.  As of v1.0.3 this function is no longer called, i.e. the 'Last Updated' column is not sortable.  This is because AJAX changes in v1.0.3 broke sorting.  This may be reinstated in a future release.
  *
  * @since 1.0.0
  *
@@ -118,7 +118,6 @@ function opn_main() {
 
 	if ( is_plugin_active( plugin_basename( __FILE__ ) ) ) {// If the plugin has passed all version checks, and remains activated, then execute main code.
 		add_filter( 'manage_plugins_columns', 'opn_add_column' );
-		add_filter( 'manage_plugins_sortable_columns', 'opn_add_sortable_column' );
 		add_action( 'admin_enqueue_scripts', 'opn_enqueue_js' );
 	}
 }
