@@ -9,7 +9,7 @@
  * Plugin Name:       Outdated Plugin Notifier
  * Plugin URI:        https://everlooksolutions.com
  * Description:       Plugin to display last modified date for all plugins.
- * Version:           1.0.2
+ * Version:           1.0.3
  * Author:            Carl Gross
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
@@ -124,12 +124,13 @@ function opn_main() {
 add_action( 'load-plugins.php', 'opn_main' );// Use the 'load-plugins.php' hook to ensure the function is run only when the admin Plugins screen is loaded.
 
 /**
- * Obtains slug of each installed plugin, then passes it to the necessary JS file which uses them to fetch the 'last updated date' for each plugin.  Slugs of installed plugins are obtained using the same method as manage_plugins_custom_column(), i.e. sanitize the plugin's 'Name' (https://developer.wordpress.org/reference/hooks/manage_plugins_custom_column/).
+ * Obtains slug, and directory/filename of each installed plugin, then passes it to the necessary JS file (which uses them to fetch and display the 'last updated date' for each plugin).  As of v1.0.2, slugs of installed plugins are assumed to be identical to the plugin's directory name. As of v1.0.3, this function passes the `directory/file name` of each plugin to the JS file.  The JS file then uses that data to target requisite HTML elements on the page.
  *
  * @since 1.0.2
  */
 function opn_enqueue_js() {
-	$opn_slugs = array();
+	$opn_slugs   = array();
+	$opn_dirfile = array();
 
 	// Obtain information about all installed plugins.
 	$opn_plugins = get_plugins();
@@ -138,7 +139,14 @@ function opn_enqueue_js() {
 
 		// Extract the slug for all installed plugins and write them to an array.
 		foreach ( $opn_plugins as $plugin_file => $plugin_data ) {
-			$opn_slugs[] = sanitize_title( $plugin_data['Name'] );
+			if ( false === strpos( $plugin_file, '/' ) ) {
+				$name = basename( $plugin_file, '.php' );
+			} else {
+				$name = dirname( $plugin_file );
+			}
+			$opn_dirfile[] = $plugin_file;
+
+			$opn_slugs[] = $name;
 		}
 		// Enqueue the plugin's main JS file on the page, which will continue execution of the plugin. The JS file will fetch the 'last updated date' of every plugin and display it on screen.  To the JS file, pass the array of plugin slugs.
 		wp_enqueue_script( 'opn-js-scripts', plugin_dir_url( __FILE__ ) . 'assets/js/opn-scripts.js', array(), filemtime( plugin_dir_path( __FILE__ ) . 'assets/js/opn-scripts.js' ), true );
@@ -146,7 +154,8 @@ function opn_enqueue_js() {
 			'opn-js-scripts',
 			'opn_ajax_object',
 			array(
-				'slugs' => $opn_slugs,
+				'slugs'     => $opn_slugs,
+				'selectors' => $opn_dirfile,
 			)
 		);
 	}

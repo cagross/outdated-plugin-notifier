@@ -45,3 +45,6 @@ There are currently no settings to configure with this plugin.  As soon as you a
 = 1.0.2 =
 * Fixes a performance bug which was causing admin plugins page to load very slowly.  
 
+= 1.0.3 =
+* Fixes a bug which was causing plugin to display a blank string for some plugins (instead of a date or an error message).
+
