@@ -14,7 +14,8 @@ for ( let j = 0; j < opnSlugs.length; j++ ) {
 		} )
 		.then( info => {//From plugin data, extract 'last updated date' and insert it into the corresponding element on the page.
 		//Define the plugin's element on the admin plugins screen.
-			const opnSelector = "#the-list tr[data-plugin='" + opnSelectors[ j ] + "'] td.last_updated";
+
+		const opnSelector = "#the-list tr[data-plugin='" + opnSelectors[ j ] + "'] td.last_updated";
 			const opnPluginEl = document.querySelectorAll( opnSelector );
 
 			//For every matching element on the page, insert the 'last updated date' from the data fetched from the API.
