@@ -22,6 +22,16 @@ for ( let j = 0; j < opnSlugs.length; j++ ) {
 			for ( let i = 0; i < opnPluginEl.length; i++ ) {
 				if ( info.last_updated ) {
 					opnPluginEl[ i ].innerHTML = info.last_updated;
+					// const event = new Date(Date.UTC(2012, 11, 20, 3, 0, 0));
+					// console.log(Date.UTC(2012, 11, 20, 3, 0, 0));
+					// console.log('Plugins date = ' + info.last_updated);
+					// // console.log(Date.UTC(info.last_updated));
+					// console.log('Plugins date object = ' + new Date(info.last_updated));
+					// // console.log('Plugins date object = ' + new Date('25 Mar 2015'));
+					// console.log(Date.UTC(info.last_updated));
+					// console.log(event);
+					// console.log(event.toLocaleString('ko-KR', { timeZone: 'UTC' }));
+
 				} else {
 					opnPluginEl[ i ].innerHTML = 'Plugin name not found.';
 				}
