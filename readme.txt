@@ -48,3 +48,6 @@ There are currently no settings to configure with this plugin.  As soon as you a
 = 1.0.3 =
 * Fixes a bug which was causing plugin to display a blank string for some plugins (instead of a date or an error message).
 
+= 1.0.4 =
+* Fixes a bug which was causing dates to display in the browser's default locale, rather than the WordPress user's locale.
+

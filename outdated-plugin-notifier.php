@@ -9,7 +9,7 @@
  * Plugin Name:       Outdated Plugin Notifier
  * Plugin URI:        https://everlooksolutions.com
  * Description:       Plugin to display last modified date for all plugins.
- * Version:           1.0.3
+ * Version:           1.0.4
  * Author:            Carl Gross
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
@@ -156,7 +156,7 @@ function opn_enqueue_js() {
 			array(
 				'slugs'     => $opn_slugs,
 				'selectors' => $opn_dirfile,
-				'locale'    => str_replace('_', '-', get_user_locale()),// In the WordPress locale string, replace _ with -, then pass it to the script.  This is because JS locale strings require a hyphen, not an underscore.
+				'locale'    => str_replace( '_', '-', get_user_locale() ), // In the WordPress locale string, replace _ with -, then pass it to the script.  This is because JS locale strings require a hyphen, not an underscore.  Send this to the script so it can display the date in the user's desired locale.
 			)
 		);
 	}
