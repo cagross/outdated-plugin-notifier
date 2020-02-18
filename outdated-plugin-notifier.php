@@ -156,6 +156,7 @@ function opn_enqueue_js() {
 			array(
 				'slugs'     => $opn_slugs,
 				'selectors' => $opn_dirfile,
+				'locale'    => str_replace('_', '-', get_user_locale()),// In the WordPress locale string, replace _ with -, then pass it to the script.  This is because JS locale strings require a hyphen, not an underscore.
 			)
 		);
 	}
