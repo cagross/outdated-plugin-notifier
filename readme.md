@@ -2,7 +2,9 @@
 
 <!-- ![alt text](https://github.com/adam-p/markdown-here/raw/master/src/common/images/icon48.png "Logo Title Text 1")Outdated Plugin Notifier -->
 
-<h1>Outdated Plugin Notifier</h1>
+![Images of various prepared meats.](images-readme/icon-128x128.png "Meat Specials screenshot") 
+
+<h1 style="display:inline;">Outdated Plugin Notifier</h1>
 
 <div>
 
