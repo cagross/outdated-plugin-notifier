@@ -5,36 +5,6 @@ const opnSlugs = opn_ajax_object.slugs;
 const opnSelectors = opn_ajax_object.selectors;
 const opnLocale = opn_ajax_object.locale;
 
-// const opnLocale = opn_ajax_object.locale.replace('_', '-');
-
-
-
-
-
-
-
-
-// const myTest = toLocaleDateStringSupportsLocales();
-// let myDate;
-// if (myTest === false) {
-// 	myDate = event.toLocaleDateString(opnLocale, options);
-// } else {
-// 	myDate = 'January 1, 2020';
-// }
-
-// function toLocaleDateStringSupportsLocales() {
-// 	try {
-// 	  new Date().toLocaleDateString('i');
-// 	} catch (e) {
-// 	  return e.name === 'RangeError';
-// 	}
-// 	return false;
-//   }
-
-
-
-
-
 //For each plugin slug in the array, connect to its page in the wordpress.org plugins API, fetch its 'last updated date,' and display it on the admin plugins screen.
 for ( let j = 0; j < opnSlugs.length; j++ ) {
 	const opnPluginURL = 'https://api.wordpress.org/plugins/info/1.0/' + opnSlugs[ j ] + '.json';
@@ -58,7 +28,6 @@ for ( let j = 0; j < opnSlugs.length; j++ ) {
 
 
 
-					// const event = new Date(Date.UTC(2012, 11, 20, 3, 0, 0));
 					const event = new Date(info.last_updated.slice(0,10));
 
 					const options = { year: 'numeric', month: 'long', day: 'numeric' };
@@ -68,12 +37,6 @@ for ( let j = 0; j < opnSlugs.length; j++ ) {
 
 
 
-
-
-
-					// opnPluginEl[ i ].innerHTML = info.last_updated;
-					// opnPluginEl[ i ].innerHTML = info.last_updated.slice(0,10);
-					// opnPluginEl[ i ].innerHTML = new Date(info.last_updated.slice(0,10));
 					opnPluginEl[ i ].innerHTML = myDate;
 
 
