@@ -4,7 +4,11 @@ All notable changes to the Outdated Plugin Notifier project will be documented i
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.0.3] - 2020-01-011
+## [1.0.4] - 2020-02-18
+### Fixed
+- Bug which was causing dates to display in the browser's default locale, rather than the WordPress user's locale.
+
+## [1.0.3] - 2020-01-11
 ### Fixed
 - Bug which was causing plugin to display a blank string for some plugins (instead of a date or an error message).
 
