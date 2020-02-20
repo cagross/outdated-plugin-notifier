@@ -34,20 +34,22 @@ There are currently no settings to configure with this plugin.  As soon as you a
 
 == Changelog ==
 
+= 1.0.4 =
+* Fixes a bug which was causing dates to display in the browser's default locale, rather than the WordPress user's locale.
+
+= 1.0.3 =
+* Fixes a bug which was causing plugin to display a blank string for some plugins (instead of a date or an error message).
+
+= 1.0.2 =
+* Fixes a performance bug which was causing admin plugins page to load very slowly.  
+
+= 1.0.1 =
+* Fixes a bug which would have prevented translations from being added to the plugin. Feel free to contribute to the project and translate the plugin into a language other than EN-US.
+
 = 1.0.0 =
 * First publicly available version. 
 
 == Upgrade Notice ==
 
-= 1.0.1 =
-* Fixes a bug which would have prevented translations from being added to the plugin. Feel free to contribute to the project and translate the plugin into a language other than EN-US.
-
-= 1.0.2 =
-* Fixes a performance bug which was causing admin plugins page to load very slowly.  
-
-= 1.0.3 =
-* Fixes a bug which was causing plugin to display a blank string for some plugins (instead of a date or an error message).
-
-= 1.0.4 =
-* Fixes a bug which was causing dates to display in the browser's default locale, rather than the WordPress user's locale.
-
+= 1.0.0 =
+Upgrade notices describe the reason a user should upgrade.  Stay tuned for more info here.
