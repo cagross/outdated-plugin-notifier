@@ -107,15 +107,6 @@ function opn_main() {
 		return;
 	}
 
-	// Ensures we can use core WordPress function plugins_api() .
-	if ( ! function_exists( 'plugins_api' ) ) {
-		$opn_include = include_once ABSPATH . 'wp-admin/includes/plugin-install.php';
-		if ( false === $opn_include ) {
-			esc_html_e( 'WordPress file wp-admin/includes/plugin-install.php not found.', 'outdated-plugin-notifier' );
-			return;
-		}
-	}
-
 	if ( is_plugin_active( plugin_basename( __FILE__ ) ) ) {// If the plugin has passed all version checks, and remains activated, then execute main code.
 		add_filter( 'manage_plugins_columns', 'opn_add_column' );
 		add_action( 'admin_enqueue_scripts', 'opn_enqueue_js' );
