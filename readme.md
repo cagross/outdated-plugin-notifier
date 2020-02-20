@@ -1,6 +1,8 @@
 ![Screenshot of plugin in-use on WordPress admin page.](images-readme/banner-1544x500.png "Meat Specials screenshot")
 
-<h1><img alt = '' src = 'images-readme/opn-icon-32x32.png' style="margin-right: 5px;">Outdated Plugin Notifier</h1>
+<!-- <h1><img alt = '' src = 'images-readme/opn-icon-32x32.png' style="margin-right: 5px;">Outdated Plugin Notifier</h1> -->
+
+# ![logo](images-readme/opn-icon-32x32.png) Outdated Plugin Notifier
 
 <div>
 
