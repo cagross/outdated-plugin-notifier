@@ -16,7 +16,7 @@ This WordPress plugin helps WordPress admins ensure their site continues to use 
 
 The latest stable version can be downloaded in zip format from the official WordPress plugin repo:  https://wordpress.org/plugins/outdated-plugin-notifier/
 
-## 📝 Table of Contents
+## 📝 Table of Content
 - [Installation](#installation)
 - [Usage](#usage)
 - [License](#license)
