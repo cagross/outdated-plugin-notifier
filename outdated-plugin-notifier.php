@@ -94,9 +94,14 @@ function opn_main() {
 
 	if ( 1 === version_compare( $opn_minwpver, $wp_version ) ) {// If user's WordPress version is too old, return an error and quit.
 		/* This suppresses the default 'Plugin Activated' notice displayed on page. */
-		if ( isset( $_GET['activate'] ) ) {
-			unset( $_GET['activate'] );
-		}
+
+		// if ( check_admin_referer( 'activate-plugin_' . $plugin ) ) {
+
+			if ( isset( $_GET['activate'] ) ) {
+				unset( $_GET['activate'] );
+			}
+		// }
+
 		add_action( 'admin_notices', 'opn_wp_ver_check' );
 		deactivate_plugins( plugin_basename( __FILE__ ) );// Self-deactivate the Outdated Plugin Notifier plugin.
 		return;
