@@ -25,35 +25,33 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 /**
- * In the plugin admin table, displays a WordPress version number error message in the plugin description column.
+ * On the plugins admin page, displays a notice if the current version of WordPress does not meet minimum requirements.
  *
- * @since 1.0.0
- *
- * @param array $plugin_meta An array containing meta information for the plugin in-question.
- * @param array $plugin_file A string containing the name of the plugin's folder, and the name of the plugin's main PHP file.
- * @return array Returns an array containing the meta information for the plugin in-question.
+ * @since 1.0.5
  */
-function opn_error_wp( $plugin_meta, $plugin_file ) {
-	if ( plugin_basename( __FILE__ ) === $plugin_file ) {// In the plugin admin table, for the Outdated Plugin Notifier plugin, display an error message.
-		$plugin_meta[] = 'Your version of WordPress does not meet the minimum requirements.  Please upgrade to WordPress version 4.9.0 or later.';
-	}
-	return $plugin_meta;
+function opn_wp_ver_check() {
+
+	?>
+	<div class="error notice">
+		<p><?php esc_html_e( 'Outdated Plugin Notifier:  Cannot activate the plugin.  Your version of WordPress does not meet the minimum requirements.  Please upgrade to WordPress version 4.9.0 or later.', 'outdated-plugin-notifier' ); ?></p>
+	</div>
+	<?php
+
 }
 
 /**
- * In the plugin admin table, displays a PHP version number error message in the plugin description column.
+ * On the plugins admin page, displays a notice if the current version of PHP does not meet minimum requirements.
  *
- * @since 1.0.0
- *
- * @param array $plugin_meta An array containing meta information for the plugin in-question.
- * @param array $plugin_file A string containing the name of the plugin's folder, and the name of the plugin's main PHP file.
- * @return array Returns an array containing the meta information for the plugin in-question.
+ * @since 1.0.5
  */
-function opn_error_php( $plugin_meta, $plugin_file ) {
-	if ( plugin_basename( __FILE__ ) === $plugin_file ) {// In the plugin admin table, for the Outdated Plugin Notifier plugin, display an error message.
-		$plugin_meta[] = 'Your version of PHP does not meet the minimum requirements.  Please upgrade to PHP version 7.0 or later.';
-	}
-	return $plugin_meta;
+function opn_php_ver_check() {
+
+	?>
+	<div class="error notice">
+		<p><?php esc_html_e( 'Outdated Plugin Notifier:  Cannot activate the plugin.  Your version of PHP does not meet the minimum requirements.  Please upgrade to PHP version 7.0.0 or later.', 'outdated-plugin-notifier' ); ?></p>
+	</div>
+	<?php
+
 }
 
 /**
@@ -93,16 +91,25 @@ function opn_main() {
 	global $wp_version;// Required to use version_compare().
 
 	$opn_minwpver = '4.9.0';
+
 	if ( 1 === version_compare( $opn_minwpver, $wp_version ) ) {// If user's WordPress version is too old, return an error and quit.
-		add_filter( 'plugin_row_meta', 'opn_error_wp', 10, 2 );
+		/* This suppresses the default 'Plugin Activated' notice displayed on page. */
+		if ( isset( $_GET['activate'] ) ) {
+			unset( $_GET['activate'] );
+		}
+		add_action( 'admin_notices', 'opn_wp_ver_check' );
 		deactivate_plugins( plugin_basename( __FILE__ ) );// Self-deactivate the Outdated Plugin Notifier plugin.
 		return;
 	}
 
 	// Confirm user's version of PHP meets minimum requirement.
+
 	$opn_minphpver = '7.0';
 	if ( version_compare( PHP_VERSION, $opn_minphpver, '<' ) ) {
-		add_filter( 'plugin_row_meta', 'opn_error_php', 10, 2 );
+		if ( isset( $_GET['activate'] ) ) {
+			unset( $_GET['activate'] );
+		}
+		add_action( 'admin_notices', 'opn_php_ver_check' );
 		deactivate_plugins( plugin_basename( __FILE__ ) );// Self-deactivate the Outdated Plugin Notifier plugin.
 		return;
 	}
@@ -152,3 +159,6 @@ function opn_enqueue_js() {
 		);
 	}
 }
+
+
+
