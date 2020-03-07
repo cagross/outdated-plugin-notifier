@@ -87,20 +87,26 @@ function opn_add_sortable_column( $columns ) {
  */
 function opn_main() {
 
+
+	// check_admin_referer( 'activate-plugin_' . 'outdated-plugin-notifier/outdated-plugin-notifier.php', '_wpnonce' );
+	// if ( check_admin_referer( 'activate-plugin_' . $plugin ) ) {
+	// if ( check_admin_referer( 'activate-plugin_' . 'outdated-plugin-notifier/outdated-plugin-notifier.php' ) ) {
+	// 	error_log( print_r( 'test-message', true ) );
+	// }
+
+
 	// Confirm user's version of WordPress meets minimum requirement.
 	global $wp_version;// Required to use version_compare().
 
 	$opn_minwpver = '4.9.0';
+	// $opn_minwpver = '5.4.0';
 
 	if ( 1 === version_compare( $opn_minwpver, $wp_version ) ) {// If user's WordPress version is too old, return an error and quit.
 		/* This suppresses the default 'Plugin Activated' notice displayed on page. */
 
-		// if ( check_admin_referer( 'activate-plugin_' . $plugin ) ) {
-
-			if ( isset( $_GET['activate'] ) ) {
-				unset( $_GET['activate'] );
-			}
-		// }
+		if ( isset( $_GET['activate'] ) ) {
+			unset( $_GET['activate'] );
+		}
 
 		add_action( 'admin_notices', 'opn_wp_ver_check' );
 		deactivate_plugins( plugin_basename( __FILE__ ) );// Self-deactivate the Outdated Plugin Notifier plugin.
@@ -108,7 +114,6 @@ function opn_main() {
 	}
 
 	// Confirm user's version of PHP meets minimum requirement.
-
 	$opn_minphpver = '7.0';
 	if ( version_compare( PHP_VERSION, $opn_minphpver, '<' ) ) {
 		if ( isset( $_GET['activate'] ) ) {
