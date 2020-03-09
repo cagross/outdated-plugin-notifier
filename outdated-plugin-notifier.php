@@ -89,6 +89,8 @@ function opn_main() {
 
 
 	// check_admin_referer( 'activate-plugin_' . 'outdated-plugin-notifier/outdated-plugin-notifier.php', '_wpnonce' );
+	// check_admin_referer( -1, '_wpnonce' );
+
 	// if ( check_admin_referer( 'activate-plugin_' . $plugin ) ) {
 	// if ( check_admin_referer( 'activate-plugin_' . 'outdated-plugin-notifier/outdated-plugin-notifier.php' ) ) {
 	// 	error_log( print_r( 'test-message', true ) );
