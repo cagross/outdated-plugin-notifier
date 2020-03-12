@@ -88,6 +88,10 @@ function opn_add_sortable_column( $columns ) {
 function opn_main() {
 
 
+	// if ( isset( $_GET['activate'] ) ) {
+	// 	error_log( print_r( 'testy', true ) );
+	// }
+
 	// check_admin_referer( 'activate-plugin_' . 'outdated-plugin-notifier/outdated-plugin-notifier.php', '_wpnonce' );
 	// check_admin_referer( -1, '_wpnonce' );
 
@@ -100,8 +104,8 @@ function opn_main() {
 	// Confirm user's version of WordPress meets minimum requirement.
 	global $wp_version;// Required to use version_compare().
 
-	$opn_minwpver = '4.9.0';
-	// $opn_minwpver = '5.4.0';
+	// $opn_minwpver = '4.9.0';
+	$opn_minwpver = '5.4.0';
 
 	if ( 1 === version_compare( $opn_minwpver, $wp_version ) ) {// If user's WordPress version is too old, return an error and quit.
 		/* This suppresses the default 'Plugin Activated' notice displayed on page. */
