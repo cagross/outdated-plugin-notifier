@@ -130,14 +130,9 @@ function opn_enqueue_js() {
 
 		// Extract the slug for all installed plugins and write them to an array.
 		foreach ( $opn_plugins as $plugin_file => $plugin_data ) {
-			if ( false === strpos( $plugin_file, '/' ) ) {
-				$name = basename( $plugin_file, '.php' );
-			} else {
-				$name = dirname( $plugin_file );
-			}
+			$slug = opn_slug($plugin_file);
+			$opn_slugs[] = $slug;
 			$opn_dirfile[] = $plugin_file;
-
-			$opn_slugs[] = $name;
 		}
 		// Enqueue the plugin's main JS file on the page, which will continue execution of the plugin. The JS file will fetch the 'last updated date' of every plugin and display it on screen.  To the JS file, pass the array of plugin slugs.
 		wp_enqueue_script( 'opn-js-scripts', plugin_dir_url( __FILE__ ) . 'assets/js/opn-scripts.js', array(), filemtime( plugin_dir_path( __FILE__ ) . 'assets/js/opn-scripts.js' ), true );
@@ -151,4 +146,14 @@ function opn_enqueue_js() {
 			)
 		);
 	}
+}
+
+/* Accept as a parameter the directory + filename that is returned by get_plugins().  Then return just the plugin slug.*/
+function opn_slug($file) {
+	if ( false === strpos( $file, '/' ) ) {
+		$name = basename( $file, '.php' );
+	} else {
+		$name = dirname( $file );
+	}
+	return $name;// Return the plugin's slug.
 }
