@@ -87,26 +87,10 @@ function opn_add_sortable_column( $columns ) {
  */
 function opn_main() {
 
-
-	// if ( isset( $_GET['activate'] ) ) {
-	// 	error_log( print_r( 'testy', true ) );
-	// }
-
-	// check_admin_referer( 'activate-plugin_' . 'outdated-plugin-notifier/outdated-plugin-notifier.php', '_wpnonce' );
-	// check_admin_referer( -1, '_wpnonce' );
-
-	// if ( check_admin_referer( 'activate-plugin_' . $plugin ) ) {
-	// if ( check_admin_referer( 'activate-plugin_' . 'outdated-plugin-notifier/outdated-plugin-notifier.php' ) ) {
-	// 	error_log( print_r( 'test-message', true ) );
-	// }
-
-
-	// Confirm user's version of WordPress meets minimum requirement.
 	global $wp_version;// Required to use version_compare().
 
+	// Confirm user's version of WordPress meets minimum requirement.
 	$opn_minwpver = '4.9.0';
-	// $opn_minwpver = '5.4.0';
-
 	if ( 1 === version_compare( $opn_minwpver, $wp_version ) ) {// If user's WordPress version is too old, return an error and quit.
 		/* This suppresses the default 'Plugin Activated' notice displayed on page. */
 
@@ -153,8 +137,8 @@ function opn_enqueue_js() {
 
 		// Extract the slug for all installed plugins and write them to an array.
 		foreach ( $opn_plugins as $plugin_file => $plugin_data ) {
-			$slug = opn_slug($plugin_file);
-			$opn_slugs[] = $slug;
+			$slug          = opn_slug( $plugin_file );
+			$opn_slugs[]   = $slug;
 			$opn_dirfile[] = $plugin_file;
 		}
 		// Enqueue the plugin's main JS file on the page, which will continue execution of the plugin. The JS file will fetch the 'last updated date' of every plugin and display it on screen.  To the JS file, pass the array of plugin slugs.
@@ -171,8 +155,15 @@ function opn_enqueue_js() {
 	}
 }
 
-/* Accept as a parameter the directory + filename that is returned by get_plugins().  Then return just the plugin slug.*/
-function opn_slug($file) {
+/**
+ * Accept as a parameter the directory + filename that is returned by get_plugins().  Then return just the plugin slug.
+ *
+ * @since 1.0.2
+ *
+ * @param string $file An string containing the directory + filename that is returned by get_plugins().
+ * @return string Returns a string containing the plugin's slug.
+ */
+function opn_slug( $file ) {
 	if ( false === strpos( $file, '/' ) ) {
 		$name = basename( $file, '.php' );
 	} else {
