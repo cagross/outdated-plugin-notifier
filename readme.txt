@@ -3,7 +3,7 @@ Contributors: carlgross
 Donate link: https://everlooksolutions.com/
 Tags: plugins
 Requires at least: 4.9.0
-Tested up to: 5.3.2
+Tested up to: 5.4
 Stable tag: trunk
 Requires PHP: 7.0
 License: GPLv2 or later
@@ -33,6 +33,9 @@ There are currently no settings to configure with this plugin.  As soon as you a
 1. This screen shot description corresponds to screenshot-1.jpg. After installing and activating the plugin, your plugin admin table should now display a new column, "Last Dev Update."  This column indicates the last time the plugin developer released an update.
 
 == Changelog ==
+
+= 1.0.5 =
+* Adds more descriptive messages when plugin fails minimum WordPress or PHP check.
 
 = 1.0.4 =
 * Fixes a bug which was causing dates to display in the browser's default locale, rather than the WordPress user's locale.

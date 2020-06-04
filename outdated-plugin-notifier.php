@@ -9,7 +9,7 @@
  * Plugin Name:       Outdated Plugin Notifier
  * Plugin URI:        https://everlooksolutions.com
  * Description:       Plugin to display last modified date for all plugins.
- * Version:           1.0.4
+ * Version:           1.0.5
  * Author:            Carl Gross
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
@@ -25,35 +25,33 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 /**
- * In the plugin admin table, displays a WordPress version number error message in the plugin description column.
+ * On the plugins admin page, displays a notice if the current version of WordPress does not meet minimum requirements.
  *
- * @since 1.0.0
- *
- * @param array $plugin_meta An array containing meta information for the plugin in-question.
- * @param array $plugin_file A string containing the name of the plugin's folder, and the name of the plugin's main PHP file.
- * @return array Returns an array containing the meta information for the plugin in-question.
+ * @since 1.0.5
  */
-function opn_error_wp( $plugin_meta, $plugin_file ) {
-	if ( plugin_basename( __FILE__ ) === $plugin_file ) {// In the plugin admin table, for the Outdated Plugin Notifier plugin, display an error message.
-		$plugin_meta[] = 'Your version of WordPress does not meet the minimum requirements.  Please upgrade to WordPress version 4.9.0 or later.';
-	}
-	return $plugin_meta;
+function opn_wp_ver_check() {
+
+	?>
+	<div class="error notice">
+		<p><?php esc_html_e( 'Outdated Plugin Notifier:  Cannot activate the plugin.  Your version of WordPress does not meet the minimum requirements.  Please upgrade to WordPress version 4.9.0 or later.', 'outdated-plugin-notifier' ); ?></p>
+	</div>
+	<?php
+
 }
 
 /**
- * In the plugin admin table, displays a PHP version number error message in the plugin description column.
+ * On the plugins admin page, displays a notice if the current version of PHP does not meet minimum requirements.
  *
- * @since 1.0.0
- *
- * @param array $plugin_meta An array containing meta information for the plugin in-question.
- * @param array $plugin_file A string containing the name of the plugin's folder, and the name of the plugin's main PHP file.
- * @return array Returns an array containing the meta information for the plugin in-question.
+ * @since 1.0.5
  */
-function opn_error_php( $plugin_meta, $plugin_file ) {
-	if ( plugin_basename( __FILE__ ) === $plugin_file ) {// In the plugin admin table, for the Outdated Plugin Notifier plugin, display an error message.
-		$plugin_meta[] = 'Your version of PHP does not meet the minimum requirements.  Please upgrade to PHP version 7.0 or later.';
-	}
-	return $plugin_meta;
+function opn_php_ver_check() {
+
+	?>
+	<div class="error notice">
+		<p><?php esc_html_e( 'Outdated Plugin Notifier:  Cannot activate the plugin.  Your version of PHP does not meet the minimum requirements.  Please upgrade to PHP version 7.0.0 or later.', 'outdated-plugin-notifier' ); ?></p>
+	</div>
+	<?php
+
 }
 
 /**
@@ -89,12 +87,18 @@ function opn_add_sortable_column( $columns ) {
  */
 function opn_main() {
 
-	// Confirm user's version of WordPress meets minimum requirement.
 	global $wp_version;// Required to use version_compare().
 
+	// Confirm user's version of WordPress meets minimum requirement.
 	$opn_minwpver = '4.9.0';
 	if ( 1 === version_compare( $opn_minwpver, $wp_version ) ) {// If user's WordPress version is too old, return an error and quit.
-		add_filter( 'plugin_row_meta', 'opn_error_wp', 10, 2 );
+		/* This suppresses the default 'Plugin Activated' notice displayed on page. */
+
+		if ( isset( $_GET['activate'] ) ) {
+			unset( $_GET['activate'] );
+		}
+
+		add_action( 'admin_notices', 'opn_wp_ver_check' );
 		deactivate_plugins( plugin_basename( __FILE__ ) );// Self-deactivate the Outdated Plugin Notifier plugin.
 		return;
 	}
@@ -102,7 +106,10 @@ function opn_main() {
 	// Confirm user's version of PHP meets minimum requirement.
 	$opn_minphpver = '7.0';
 	if ( version_compare( PHP_VERSION, $opn_minphpver, '<' ) ) {
-		add_filter( 'plugin_row_meta', 'opn_error_php', 10, 2 );
+		if ( isset( $_GET['activate'] ) ) {
+			unset( $_GET['activate'] );
+		}
+		add_action( 'admin_notices', 'opn_php_ver_check' );
 		deactivate_plugins( plugin_basename( __FILE__ ) );// Self-deactivate the Outdated Plugin Notifier plugin.
 		return;
 	}
@@ -130,14 +137,9 @@ function opn_enqueue_js() {
 
 		// Extract the slug for all installed plugins and write them to an array.
 		foreach ( $opn_plugins as $plugin_file => $plugin_data ) {
-			if ( false === strpos( $plugin_file, '/' ) ) {
-				$name = basename( $plugin_file, '.php' );
-			} else {
-				$name = dirname( $plugin_file );
-			}
+			$slug          = opn_slug( $plugin_file );
+			$opn_slugs[]   = $slug;
 			$opn_dirfile[] = $plugin_file;
-
-			$opn_slugs[] = $name;
 		}
 		// Enqueue the plugin's main JS file on the page, which will continue execution of the plugin. The JS file will fetch the 'last updated date' of every plugin and display it on screen.  To the JS file, pass the array of plugin slugs.
 		wp_enqueue_script( 'opn-js-scripts', plugin_dir_url( __FILE__ ) . 'assets/js/opn-scripts.js', array(), filemtime( plugin_dir_path( __FILE__ ) . 'assets/js/opn-scripts.js' ), true );
@@ -151,4 +153,21 @@ function opn_enqueue_js() {
 			)
 		);
 	}
+}
+
+/**
+ * Accept as a parameter the directory + filename that is returned by get_plugins().  Then return just the plugin slug.
+ *
+ * @since 1.0.2
+ *
+ * @param string $file An string containing the directory + filename that is returned by get_plugins().
+ * @return string Returns a string containing the plugin's slug.
+ */
+function opn_slug( $file ) {
+	if ( false === strpos( $file, '/' ) ) {
+		$name = basename( $file, '.php' );
+	} else {
+		$name = dirname( $file );
+	}
+	return $name;// Return the plugin's slug.
 }

@@ -21,7 +21,8 @@ The latest stable version can be downloaded in zip format from the official Word
 - [Usage](#usage)
 - [License](#license)
 
-## Installation
+## 💻 Installation <a name = "installation"></a>
+<!-- ## Installation -->
 
 ### Automatic installation from WordPress Dashboard
 
@@ -30,10 +31,10 @@ The latest stable version can be downloaded in zip format from the official Word
 3. Once the search completes, locate Outdated Plugin Notifier in the list and click _Install Now_.
 4. After installation completes, click _Activate_.
 
-## Usage
+## 🎈 Usage <a name="usage"></a>
 
 To use, simply install and activate the plugin. There is no additional configuration required. After, open the plugin admin page from your WordPress dashboard and you will see a new column displayed in the table: Last Dev Update. This column will indicate the last date the plugin was updated by its developer. If it has been several months–or years–since the developer last updated the plugin, you may want to contact the developer to confirm the plugin is still maintained. If the plugin is no longer in the WordPress plugin repository, Outdated Plugin Notifier will indicate so on the plugins admin page.
 
-## License
+## :shield: License <a name="license"></a>
 
 [GPL v2.0](LICENSE)
