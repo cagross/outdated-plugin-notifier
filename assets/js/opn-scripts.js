@@ -1,3 +1,4 @@
+/*global opn_ajax_object*/
 'use strict';
 
 //Save the array of plugin slugs passed from the server to a new array.
