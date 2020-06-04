@@ -34,6 +34,9 @@ There are currently no settings to configure with this plugin.  As soon as you a
 
 == Changelog ==
 
+= 1.0.5 =
+* Adds more descriptive messages when plugin fails minimum WordPress or PHP check.
+
 = 1.0.4 =
 * Fixes a bug which was causing dates to display in the browser's default locale, rather than the WordPress user's locale.
 
