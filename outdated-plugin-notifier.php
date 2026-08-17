@@ -122,7 +122,7 @@ function opn_main() {
 add_action( 'load-plugins.php', 'opn_main' );// Use the 'load-plugins.php' hook to ensure the function is run only when the admin Plugins screen is loaded.
 
 /**
- * Obtains slug, and directory/filename of each installed plugin, then passes it to the necessary JS file (which uses them to fetch and display the 'last updated date' for each plugin).  As of v1.0.2, slugs of installed plugins are assumed to be identical to the plugin's directory name. As of v1.0.3, this function passes the `directory/file name` of each plugin to the JS file.  The JS file then uses that data to target requisite HTML elements on the page.
+ * Obtains slug, and directory/filename of each installed plugin, then passes it to the necessary JS file (which uses them to fetch and display the 'last updated date' for each plugin).  As of v1.0.2, slugs of installed plugins are assumed to be identical to the plugin's directory name. As of v1.0.3, this function passes the `directory/file name` of each plugin to the JS file.  The JS file then uses that data to target requisite HTML elements on the page.  As of v1.0.7, also passes the admin-ajax.php URL and a nonce, since the JS file now fetches each plugin's data via an AJAX call to this site (which in turn calls plugins_api()) rather than fetching directly from the wordpress.org API.
  *
  * @since 1.0.2
  */
@@ -150,6 +150,8 @@ function opn_enqueue_js() {
 				'slugs'     => $opn_slugs,
 				'selectors' => $opn_dirfile,
 				'locale'    => str_replace( '_', '-', get_user_locale() ), // In the WordPress locale string, replace _ with -, then pass it to the script.  This is because JS locale strings require a hyphen, not an underscore.  Send this to the script so it can display the date in the user's desired locale.
+				'ajax_url'  => admin_url( 'admin-ajax.php' ), // The JS file POSTs here (once per plugin) instead of fetching wordpress.org directly.
+				'nonce'     => wp_create_nonce( 'opn_ajax_nonce' ), // Verified server-side by opn_ajax_get_plugin_info() via check_ajax_referer().
 			)
 		);
 	}
@@ -171,3 +173,74 @@ function opn_slug( $file ) {
 	}
 	return $name;// Return the plugin's slug.
 }
+
+/**
+ * Handles the AJAX request (fired from opn-scripts.js, once per installed plugin) for a single plugin's 'last updated' date.  Looks the slug up against the WordPress.org plugin API via plugins_api(), then returns the result as a JSON response.  Every response is server-side and live; no caching is used, so the value returned always reflects the current wordpress.org data.
+ *
+ * @since 1.0.7
+ */
+function opn_ajax_get_plugin_info() {
+
+	if ( ! check_ajax_referer( 'opn_ajax_nonce', 'nonce', false ) ) {// Reject requests without a valid nonce for this page load.
+		wp_send_json_error( array( 'message' => __( 'Invalid or expired security token.', 'outdated-plugin-notifier' ) ), 403 );
+	}
+
+	if ( ! current_user_can( 'activate_plugins' ) ) {// Reject requests from users who shouldn't see this data.
+		wp_send_json_error( array( 'message' => __( 'You do not have permission to do this.', 'outdated-plugin-notifier' ) ), 403 );
+	}
+
+	$opn_slug = isset( $_POST['slug'] ) ? sanitize_title( wp_unslash( $_POST['slug'] ) ) : '';
+
+	if ( empty( $opn_slug ) ) {
+		wp_send_json_error( array( 'message' => __( 'No plugin slug provided.', 'outdated-plugin-notifier' ) ), 400 );
+	}
+
+	// Confirm the requested slug actually belongs to a plugin installed on this site, rather than trusting the client-supplied value outright.
+	$opn_valid_slug     = false;
+	$opn_installed_list = get_plugins();
+	foreach ( $opn_installed_list as $plugin_file => $plugin_data ) {
+		if ( opn_slug( $plugin_file ) === $opn_slug ) {
+			$opn_valid_slug = true;
+			break;
+		}
+	}
+
+	if ( ! $opn_valid_slug ) {
+		wp_send_json_error( array( 'message' => __( 'Plugin not found on this site.', 'outdated-plugin-notifier' ) ), 400 );
+	}
+
+	if ( ! function_exists( 'plugins_api' ) ) {
+		require_once ABSPATH . 'wp-admin/includes/plugin-install.php';
+	}
+
+	$opn_data = plugins_api(
+		'plugin_information',
+		array(
+			'slug'   => $opn_slug,
+			'fields' => array(
+				'sections'          => false,
+				'short_description' => false,
+				'description'       => false,
+				'tags'              => false,
+				'reviews'           => false,
+				'banners'           => false,
+				'icons'             => false,
+				'compatibility'     => false,
+				'ratings'           => false,
+			),
+		)
+	);
+
+	// If the plugin isn't recognized by the WordPress.org repo (e.g. a premium or custom plugin), that's a valid, expected outcome, not a failed request. Return success with 'found' set to false, rather than an HTTP error.
+	if ( is_wp_error( $opn_data ) || empty( $opn_data->last_updated ) ) {
+		wp_send_json_success( array( 'found' => false ) );
+	}
+
+	wp_send_json_success(
+		array(
+			'found'        => true,
+			'last_updated' => $opn_data->last_updated,
+		)
+	);
+}
+add_action( 'wp_ajax_opn_get_plugin_info', 'opn_ajax_get_plugin_info' );// Registered unconditionally (not inside opn_main()), since admin-ajax.php requests never fire the 'load-plugins.php' hook that opn_main() depends on.
