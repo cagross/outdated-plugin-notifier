@@ -34,6 +34,9 @@ There are currently no settings to configure with this plugin.  As soon as you a
 
 == Changelog ==
 
+= 1.0.7 =
+* Fixes a bug causing a 404 console error for plugins not found in the WordPress plugin repo.
+
 = 1.0.6 =
 * Adds (to the WordPress plugins page) a more descriptive message when a plugin is not found in the WordPress plugin repo.
 * Adds minor front-end error handling.
