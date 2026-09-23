@@ -34,6 +34,9 @@ There are currently no settings to configure with this plugin.  As soon as you a
 
 == Changelog ==
 
+= 1.0.8 =
+* Reverts the plugin lookup to the plugin_information API action, so that plugins ranking poorly in WordPress directory search are no longer mislabeled as missing from the repo.
+
 = 1.0.7 =
 * Fixes a bug causing a 404 console error for plugins not found in the WordPress plugin repo.
 

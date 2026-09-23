@@ -9,7 +9,7 @@
  * Plugin Name:       Outdated Plugin Notifier
  * Plugin URI:        https://everlooksolutions.com
  * Description:       Plugin to display last modified date for all plugins.
- * Version:           1.0.7
+ * Version:           1.0.8
  * Author:            Carl Gross
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
